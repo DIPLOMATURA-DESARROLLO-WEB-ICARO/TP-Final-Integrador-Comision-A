@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="d-block">
+    <h1 class="text-center mt-5 pe-5">Recibidos</h1>
+    <div class="mt-2">
+      <table class="table table-sm table-striped ">
+        <caption></caption>
+        <thead class="th-color">
+          <tr>
+            <th scope="col" class="row-ths text-center ">N°</th>
+            <th scope="col" class="row-ths text-center ">Remitente</th>
+            <th scope="col" class="row-ths ">Mensaje</th>
+            <th scope="col" class="row-ths text-center ">Fecha</th>
+            <th scope="col" class="row-ths text-center "> Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="messages.length == 0;">
+            <td class="text-center nro-row" colspan="5"> ¡Bandeja de entrada vaciá! </td>
+          </tr>
+          <tr *ngFor="let message of messages; let i = index" >
+            <th class="text-center nro-row" scope="row">{{i+1}}</th>
+            <td class="text-center user-row">{{message.sender.username}}</td>
+            <td class=" msg-row">{{message.message}}</td>
+            <td class="text-center date-row">{{ formatDate(message.createdAt)}}</td>
+            <td class="text-center action-row ps-4">
+              <button mat-mini-fab 
+                color="secondary" 
+                class="ml-3 mt-1 btn" 
+                [matTooltip]="message.tooltip"
+                (click)="readMsg(message)"
+                [ngClass]="{'msg-read': message.isRead}">
+                <mat-icon class="icon">drafts</mat-icon>
+              </button>
+              <button mat-mini-fab color="warn" class="mx-3 mt-1 btn" matTooltip="Borrar" (click)="deleteMsg(message.id_message)">
+                <mat-icon class="icon">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

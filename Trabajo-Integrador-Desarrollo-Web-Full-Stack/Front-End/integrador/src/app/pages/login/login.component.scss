@@ -1,0 +1,24 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  
+}
+
+.login-inputs {
+  flex-direction: column;
+  gap: 10px;
+  width: 240px;
+}
+
+.login-link{
+  color: #3f51b5;
+  font-weight: 500;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="d-flex flex-column justify-content-center align-items-center my-5 ">
+    <form [formGroup]="newUser" (ngSubmit)="signup($event)">
+      <div class="signup-inputs">
+
+        <div class="mb-3 d-flex flex-row justify-content-center">
+          <div class="me-2 w-50">
+            <label class="mb-1">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nombre"
+              formControlName= "firstname"
+            />
+            <div class="text-danger" *ngIf="newUser.get('firstname')?.hasError('required')">
+              Ingresar nombre!
+            </div>
+          </div>
+          <div class="w-50">
+            <label class="mb-1">Apellido</label>
+            <input
+            type="text"
+            class="form-control"
+            placeholder="Apellido"
+            formControlName= "lastname"
+            />
+            <div class="text-danger" *ngIf="newUser.get('lastname')?.hasError('required')">
+              Ingresar apellido!
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="mb-1">Nombre de usuario</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Usuario"
+            formControlName= "username"
+            autocomplete="off"
+          />
+          <div class="text-danger" *ngIf="newUser.get('username')?.hasError('required')">
+            Ingresar nombre de usuario!
+          </div>
+        </div>
+        
+        <div class="mb-3 d-flex flex-row justify-content-center ">
+          <div class="me-2 w-50">
+            <label class="mb-1">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Contraseña"
+              formControlName= "password"
+              autocomplete="off"
+            />
+            <div class="text-danger" *ngIf="newUser.get('password')?.hasError('required')">
+              Ingresar contraseña!
+            </div>
+          </div>
+          <div class="w-50">
+            <label class="mb-1">Confirmar contraseña</label>
+            <input
+            type="password"
+            class="form-control"
+            placeholder="Confirmar contraseña"
+            formControlName= "repeat_password"
+            />
+            <div class="text-danger" *ngIf="newUser.get('repeat_password')?.hasError('required')">
+              Ingresar la misma contraseña!
+            </div>
+            <div class="text-danger" *ngIf="!validPass && flagMsgPass">
+              Ingrese contraseñas iguales!
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="country" class="form-label">País</label>
+          <select class="form-select" name="country" formControlName= "country" 
+          (click)="getCities()">
+            <option [selected] value="">Seleccione...</option>
+            <option 
+            *ngFor="let country of countries" 
+            [value]="country.country" 
+            >{{country.country}}</option>
+          </select>
+          <div class="text-danger" *ngIf="newUser.get('country')?.hasError('required')">
+            Seleccione un país!
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label">Ciudad</label>
+          <select class="form-select" name="city" formControlName= "city" >
+            <option [selected] value="">Seleccione...</option>
+            <option 
+            *ngFor="let city of cities" 
+            [value]="city" >{{city}} </option>
+          </select>
+          <div class="text-danger" *ngIf="newUser.get('city')?.hasError('required')">
+            Seleccione una ciudad!
+          </div>
+        </div>
+
+        <div class="d-flex flex-column justify-content-center align-items-center">
+          <span class="my-2">
+            ¿Tienes una cuenta? 
+            <a routerLink="/login" class="signup-link">Logueate</a>
+          </span>
+          <button 
+          type="submit"
+          mat-raised-button 
+          color="primary"
+          class="mt-3"
+          >
+          Registrarse
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

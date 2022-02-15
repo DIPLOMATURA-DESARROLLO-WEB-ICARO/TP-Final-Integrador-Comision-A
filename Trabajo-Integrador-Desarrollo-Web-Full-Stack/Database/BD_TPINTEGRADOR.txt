@@ -1,0 +1,175 @@
+a) Estructura de tablas
+
+#CREAR BASE DE DATOS
+CREATE DATABASE IF NOT EXISTS integrador;
+USE integrador;
+
+#CREAR TABLAS
+CREATE TABLE `integrador`.`users` (
+  `id_user` INT NOT NULL AUTO_INCREMENT,
+  `firstname` VARCHAR(20) NOT NULL,
+  `lastname` VARCHAR(20) NOT NULL,
+  `username` VARCHAR(20) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `country` VARCHAR(20) NOT NULL,
+  `city` VARCHAR(20) NOT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  PRIMARY KEY (`id_user`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+CREATE TABLE `integrador`.`messages` (
+  `id_message` INT NOT NULL AUTO_INCREMENT,
+  `message` VARCHAR(144) NOT NULL,
+  `id_user` INT NOT NULL,
+  `id_receiver` INT NOT NULL,
+  `isRead` BOOLEAN NOT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  PRIMARY KEY (`id_message`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+#FOREIGN KEYS
+ALTER TABLE `integrador`.`messages` 
+CHARACTER SET = utf8mb4 ,
+ADD INDEX `FK_user-user` (`id_user` ASC) VISIBLE;
+
+ALTER TABLE `integrador`.`messages` 
+ADD CONSTRAINT `FK_user-user`
+  FOREIGN KEY (`id_user`)
+  REFERENCES `integrador`.`users` (`id_user`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+  
+  
+ALTER TABLE `integrador`.`messages` 
+CHARACTER SET = utf8mb4 ,
+ADD INDEX `FK_user-receiver` (`id_receiver` ASC) VISIBLE;
+
+ALTER TABLE `integrador`.`messages` 
+ADD CONSTRAINT `FK_user-receiver`
+  FOREIGN KEY (`id_receiver`)
+  REFERENCES `integrador`.`users` (`id_user`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+
+
+b) Implementación de integridad de datos
+
+# CARGA DE DATOS
+ALTER TABLE `integrador`.`users` AUTO_INCREMENT = 1;
+INSERT INTO `integrador`.`users` (`firstname`, `lastname`, `username`, `password`, `country`, `city`,`createdAt`,`updatedAt`)
+	VALUES ('Patricio', 'Pagano', 'ppagano','123456','Argentina', 'Buenos Aires',CURTIME(),  CURTIME());
+INSERT INTO `integrador`.`users` (`firstname`, `lastname`, `username`, `password`, `country`, `city`,`createdAt`,`updatedAt`)
+	VALUES ('Matias', 'Lokman', 'mlokman','123456','Argentina', 'Cordoba', CURTIME(), CURTIME());
+INSERT INTO `integrador`.`users` (`firstname`, `lastname`, `username`, `password`, `country`, `city`,`createdAt`,`updatedAt`)
+	VALUES ('Santiago', 'Moreno', 'smoreno','123456','Argentina', 'Cordoba', CURTIME(), CURTIME());
+
+
+ALTER TABLE `integrador`.`messages` AUTO_INCREMENT = 1;
+INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES ('Hola Mati, cómo andas?', '1', '2', FALSE, CURTIME(), CURTIME());
+INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES ('Hola Pato, Todo bien, vos?', '2', '1', FALSE, CURTIME(), CURTIME());
+INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES ('Hola Pato, cómo andas? Soy Santi', '3', '1', FALSE, CURTIME(), CURTIME());
+INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES ('Hola Santi, Bien, vos?', '1', '3', FALSE, CURTIME(), CURTIME());
+INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES ('Hola Mati, cómo andas? Soy Santi', '3', '2', FALSE, CURTIME(), CURTIME());
+INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES ('Hola Santi, Bien y vos?', '2', '3', FALSE, CURTIME(), CURTIME());
+
+
+c) Procedimientos Almacenados para envío de mensajes y login de usuarios
+
+#ENVIO MENSAJE
+DROP procedure IF EXISTS `sp_envio_mensajes`;
+
+DELIMITER $$
+CREATE PROCEDURE `sp_envio_mensajes` (IN sender INT, IN receiver INT, IN msg VARCHAR(144))
+BEGIN
+	ALTER TABLE `integrador`.`messages` AUTO_INCREMENT = 1;	
+    INSERT INTO `integrador`.`messages` (`message`, `id_user`, `id_receiver`, `isRead`, `createdAt`,`updatedAt`)
+	VALUES (msg, sender, receiver, FALSE, CURTIME(), CURTIME());
+END$$
+
+DELIMITER ;
+
+SELECT * FROM messages;
+CALL sp_envio_mensajes(1,2,"Hola Mati, estamos probando los store procedures");
+
+
+#LOGIN
+DROP procedure IF EXISTS `sp_login`;
+DELIMITER $$
+CREATE PROCEDURE `sp_login` (IN nombreusuario VARCHAR(255),IN pass VARCHAR(255))
+BEGIN    
+    SELECT * FROM `integrador`.`users` WHERE nombreusuario = username AND password =pass;
+END$$
+DELIMITER ;
+
+#LOGIN CORRECTO
+CALL sp_login("mlokman",123456);
+
+#LOGIN INCORRECTO
+CALL sp_login("ppagano",1234567);
+
+
+d) Consultas SQL para la obtención de mensajes recibidos por cada usuario, especificando usuario remitente y usuario receptor
+
+
+SELECT `mensajes`.`createdAt` AS `Fecha`, `mensajes`.`id_user` AS `Remitente`, `mensajes`.`id_receiver` AS `Receptor`, `mensajes`.`message` AS `Mensaje`
+	FROM `integrador`.`messages`
+	WHERE `mensajes`.`id_receiver` = 1;
+
+
+e) Consultas SQL para la obtención de mensajes enviados por cada usuario, especificando usuario remitente y usuario receptor
+
+SELECT `mensajes`.`createdAt` AS `Fecha`, `mensajes`.`id_user` AS `Remitente`, `mensajes`.`id_receiver` AS `Receptor`, `mensajes`.`message` AS `Mensaje`
+	FROM `integrador`.`messages` AS mensajes 
+	WHERE `mensajes`.`id_user` = 1;
+
+
+
+f) Consultas SQL para la obtención de las siguiente estadisticas :
+
+f.1) Cantidad de usuarios por país
+
+SELECT `users`.`country` AS `Pais`, COUNT(*) AS `Cantidad` 
+	FROM `integrador`.`users` GROUP BY `users`.`country`;
+
+
+f.2) Cantidad de mensajes (enviados y recibidos) por usuario
+
+USE `integrador`;
+CREATE  OR REPLACE VIEW `vw_cantidad_enviados` AS
+SELECT `messages`.`id_user` AS `Usuario`, COUNT(*) AS `Cantidad Enviados`
+	FROM `integrador`.`messages` GROUP BY `messages`.`id_user`;
+    
+CREATE  OR REPLACE VIEW `vw_cantidad_enviados_recibidos` AS
+SELECT `messages`.`id_receiver`, `vw_cantidad_enviados`.`Cantidad Enviados`, COUNT(*) AS `Cantidad Recibidos`
+FROM `integrador`.`messages`
+    INNER JOIN `vw_cantidad_enviados`
+		ON `messages`.`id_receiver` = `vw_cantidad_enviados`.Usuario    
+	GROUP BY `vw_cantidad_enviados`.Usuario; 
+
+
+f.3) Cantidad de mensajes leídos por usuario
+
+SELECT `messages`.`id_user` AS `Usuario`, COUNT(*) AS `Cantidad Leídos`
+	FROM `integrador`.`messages` 
+	WHERE `messages`.`isRead` = TRUE 
+	GROUP BY `messages`.`id_user`; 
+
+
+f.4) Cantidad de mensajes por fecha
+
+SELECT DATE(`messages`.`createdAt`) AS `FECHA`, COUNT(*) AS `Cantidad Mensajes`
+	FROM `integrador`.`messages`
+	GROUP BY `FECHA`;

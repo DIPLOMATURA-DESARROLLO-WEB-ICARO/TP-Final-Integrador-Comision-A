@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="login-container position-absolute top-50 start-50 translate-middle w-25">
+    <div class="login-inputs">
+      <div class="mb-3">
+        <label class="mb-1">Nombre de usuario</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Usuario"
+          [(ngModel)]="username"
+        />
+      </div>
+      <div class="mb-2">
+        <label class="mb-1">Contraseña</label>
+        <input
+        type="password"
+        class="form-control"
+        placeholder="Contraseña"
+        [(ngModel)]="password"
+        />
+      </div>
+    </div>
+    
+    <span >
+      ¿No tienes una cuenta? 
+      <a routerLink="/signup" class="login-link">Regístrate</a>
+    </span>
+    <button 
+      type="button"
+      mat-raised-button 
+      color="primary"
+      class="mt-3"
+      (click)="login()">
+      Iniciar sesión
+    </button>
+  </div> 
+</div>

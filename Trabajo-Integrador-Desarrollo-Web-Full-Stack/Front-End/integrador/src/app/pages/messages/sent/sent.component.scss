@@ -1,0 +1,28 @@
+.th-color{
+  background-color: #3f51b53f;
+}
+
+.msg-row{
+  width: 60%;
+}
+
+.nro-row, .user-row, .date-row, .msg-row{
+  padding: 1rem ;
+}
+.row-ths{
+  height: 50px;
+  padding: 1rem;
+}
+
+tr:hover{
+  background-color: rgba(187, 187, 187, 0.564);
+}
+
+.icon{
+font-size: 20px;
+}
+
+.btn {
+  width: 35px;
+  height: 35px;
+}
