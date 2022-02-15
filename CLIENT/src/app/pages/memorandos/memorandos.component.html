@@ -1,0 +1,59 @@
+<div class="todaLaPagina">
+
+  <h4> Memorandos Internos</h4>
+
+  <div class="botones">
+
+    <button (click)="getEnviados()"> Enviados</button>
+    <button (click)="getRecibidos()"> Recibidos</button>
+    <!-- <button (click)="newMensaje()"> Nuevo Mensaje</button> -->
+
+  <div *ngFor="let enviados of enviadosData">
+
+ <table>
+   <tr>
+   <td><strong>Id Usuario</strong></td>
+   <td><strong>Mensaje</strong></td>
+  </tr>
+
+  <tr>
+    <td>{{enviados.id}}</td>
+    <td>{{enviados.text}}</td>
+  </tr>
+</table>
+
+</div>
+
+<div *ngFor="let recibidos of recibidosData">
+
+  <table>
+    <tr>
+    <td><strong>Id_Usuario</strong></td>
+    <td><strong>Mensaje</strong></td>
+   </tr>
+
+   <tr>
+     <td>{{recibidos.id}}</td>
+     <td>{{recibidos.text}}</td>
+   </tr>
+
+  </table>
+
+</div>
+
+<form (submit)="submit()" [formGroup]="enviarForm" >
+
+<div class="form-group">
+  <button (click)="newMensaje()" type="submit" class ="btn btn-success">Nuevo Mensaje</button>
+  <input type="text" placeholder="id_Destinatario" class="form-control" formControlName="destinatario">
+  <input type="text" placeholder="Escriba su mensaje" class="form-control" formControlName="newMensaje">
+
+</div>
+
+</form>
+
+
+
+
+
+

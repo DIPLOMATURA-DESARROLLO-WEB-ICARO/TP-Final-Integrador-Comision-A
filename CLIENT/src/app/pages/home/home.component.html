@@ -1,0 +1,32 @@
+<div class="contenidoGeneral">
+
+
+  <h2> LOGIN</h2>
+
+<form (submit)="submit()" [formGroup]="loginForm" >
+
+<div class="formularioLogin">
+
+  <div class="form-group">
+    <label for="username">Nombre de Usuario</label>
+    <input type="text" class="form-control" formControlName="username">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Contraseña</label>
+    <input type="password" class="form-control" formControlName="password">
+  </div>
+
+
+  <button type="submit" class ="btn btn-success">Ingresar</button>
+  <button type="button" class="btn btn-default">
+    <a class="login_link" routerLink="/registro"> Registrarme</a>
+  </button>
+
+
+</div>
+</form>
+
+</div>
+
+

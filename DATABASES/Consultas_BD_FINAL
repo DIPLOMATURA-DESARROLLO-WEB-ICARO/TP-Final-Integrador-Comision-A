@@ -1,0 +1,51 @@
+
+CONSULTAS SQL TRABAJO FINAL ICARO
+
+
+- Buscar mensajes por usuario
+
+SELECT * FROM bd_final_icaro.messages where users_id = 2;
+
+
+- Buscar mensajes recibidos por usuario
+
+SELECT u.email AS emisor, m.matter AS asunto, m.body AS mensaje, m.to_email  
+FROM bd_final_icaro.messages AS m
+JOIN bd_final_icaro.users AS u
+ON u.users_id = m.users_id
+where state = 'received' AND m.users_id = '2';
+
+- Buscar enviados recibidos por usuario
+
+SELECT u.email AS emisor, m.matter AS asunto, m.body AS mensaje, m.to_email  
+FROM bd_final_icaro.messages AS m
+JOIN bd_final_icaro.users AS u
+ON u.users_id = m.users_id
+where state = 'sent' AND m.users_id = '2';
+
+
+- Cantidad de mensajes por usuario
+
+SELECT COUNT(*) FROM bd_final_icaro.messages where users_id = 2;
+
+- Cantidad de mensajes leídos por usuario
+
+SELECT COUNT(*) FROM bd_final_icaro.messages where users_id = 2 and state = 'received';
+
+
+- Cantidad de usuarios por país.
+
+USE bd_final_icaro;
+SELECT name_country, COUNT(c.id_country)
+FROM users AS u
+JOIN  countries AS c
+ON u.id_country = c.id_country
+GROUP BY c.name_country;
+
+
+
+
+
+
+
+

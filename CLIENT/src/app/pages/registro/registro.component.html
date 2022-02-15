@@ -1,0 +1,55 @@
+<div class="contenidoGeneral">
+
+
+  <h2> Formulario de Registro</h2>
+
+<form (submit)="submit()" [formGroup]="registerForm" >
+
+<div class="formulario">
+
+  <div class="form-group">
+    <label for="lastName">Apellido</label>
+    <input type="text" class="form-control" formControlName="lastName">
+  </div>
+
+  <div class="form-group">
+    <label for="name">Nombre</label>
+    <input type="text" class="form-control" formControlName="name">
+  </div>
+
+  <div class="form-group">
+    <label for="username">Nombre de Usuario</label>
+    <input type="text" class="form-control" formControlName="username">
+  </div>
+
+
+  <div class="form-group">
+    <label for="password">Contraseña</label>
+    <input type="password" class="form-control" formControlName="password">
+  </div>
+
+
+  <div class="form-group">
+    <label for="country">País</label>
+    <input type="text" class="form-control" formControlName="country">
+  </div>
+
+
+  <div class="form-group">
+    <label for="city">Ciudad</label>
+    <input type="text" class="form-control" formControlName="city">
+  </div>
+
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" formControlName="notificaciones">
+    <label class="form-check-label" for="notificaciones"> Quiero recibir notificaciones</label>
+  </div>
+
+  <button type="submit" class ="btn btn-success">Registrarme</button>
+  <button type="button" class="btn btn-default" (click)="refrescar()">Refrescar</button>
+
+</div>
+</form>
+
+</div>
+

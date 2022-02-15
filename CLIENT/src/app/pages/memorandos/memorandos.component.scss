@@ -1,0 +1,40 @@
+.botones {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 30px;
+  margin: 40px;
+}
+
+button {
+  margin-bottom: 40px;
+  border-radius: 10px;
+  background-color: #4ecdc4;
+  width: 185px;
+  height: 30px;
+  box-sizing: border-box;
+  transition: box-shadow 0.5s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 10px rgb(140, 243, 140);
+  }
+}
+
+td {
+  border-collapse: separate;
+  border: #556270 5px solid;
+}
+
+h4 {
+  display: flex;
+  justify-content: center;
+  margin: 60px;
+  font-size: larger;
+}
+
+.todaLaPagina {
+  background: -webkit-linear-gradient(to right, #556270, #4ecdc4);
+  background: linear-gradient(to right, #556270, #4ecdc4);
+}
